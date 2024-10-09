@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Yumify.API.DTO.Products;
 using Yumify.API.Helper;
-using Yumify.API.Helper.Sorting;
 using Yumify.Core.Entities;
 using Yumify.Core.IRepository;
+using Yumify.Repository.SpecificationEvaluator;
 using Yumify.Repository.SpecificationEvaluator.ProductSpec;
+using Yumify.Service.Helper.Pagintion;
+using Yumify.Service.SpecificationEvaluator.Sorting;
 
 namespace Yumify.API.Controllers
 {
@@ -23,11 +25,11 @@ namespace Yumify.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetProductDTO>>> GetProducts([FromQuery]Sorting? sorting)
+        public async Task<ActionResult<Pagination<IEnumerable<GetProductDTO>>>> GetProducts([FromQuery] GetSpecParts? specParts)
         {
             var response = new GeneralResponse(NotFound().StatusCode,String.Empty);
             
-            var spec = new ProductsSpec(sorting);
+            var spec = new ProductsSpec(specParts);
             var productsWitSpec = await _productsRepo.GetAllWithSpec(spec);
             if (productsWitSpec is not null)
             {
@@ -35,7 +37,9 @@ namespace Yumify.API.Controllers
                 response.Data = MappingProducts;
                 response.StatusCode = 200;
                 response.Message = response.chooseMessage(Ok().StatusCode);
-                return Ok(response);
+                var Paginated= new Pagination<IEnumerable<GetProductDTO>>() { PageIndex=specParts.PageIndex,PageSize=specParts.PageSize};
+                Paginated.PageData=response.Data;
+                return Ok(Paginated);
             }
             response.Message = response.chooseMessage(NotFound().StatusCode);
             return NotFound(response);

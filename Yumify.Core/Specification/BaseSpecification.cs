@@ -14,14 +14,18 @@ namespace Yumify.Core.Specification
         public List<Expression<Func<T,object>>> Includes { get; set; } = new List<Expression<Func<T, object>>>();
         public Expression<Func<T, object>> SortingASC { get; set; } = null!;
         public Expression<Func<T, object>> SortingDESC { get; set; } = null!;
+        public int Skip { get; set; }
+        public int Take { get; set; }
 
         public BaseSpecification()
         {
             //With Includes only
         }
-        public BaseSpecification(Expression<Func<T, bool>> condition)
+        public BaseSpecification(Expression<Func<T, bool>> condition,int pageSize=1,int pageIndex=1)
         {
             this.condition = condition;
+            Skip = (pageIndex-1)*pageSize;
+            Take= pageSize;
         }
 
 

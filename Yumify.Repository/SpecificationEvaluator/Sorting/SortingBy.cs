@@ -1,4 +1,4 @@
-﻿namespace Yumify.API.Helper.Sorting
+﻿namespace Yumify.Service.SpecificationEvaluator.Sorting
 {
     public enum SortingBy
     {

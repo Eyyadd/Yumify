@@ -10,4 +10,8 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Yumify.Repository\Yumify.Repository.csproj" />
+  </ItemGroup>
+
 </Project>

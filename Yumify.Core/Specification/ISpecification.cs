@@ -14,5 +14,7 @@ namespace Yumify.Core.Specification
         List<Expression<Func<T, object>>> Includes { get; set; }
         Expression<Func<T,object>> SortingASC { get; set; }
         Expression<Func<T,object>> SortingDESC { get; set; }
+        int Skip { get; set; }
+        int Take { get; set; }
     }
 }
