@@ -1,0 +1,146 @@
+[
+    {
+        "Name": "Caramel Frappuccino",
+        "Description": "A sweet, blended iced coffee drink topped with whipped cream and caramel drizzle.",
+        "Price": 5.99,
+        "PictureUrl": "https://example.com/caramel_frappuccino.jpg",
+        "CategoryId": 1,
+        "BrandId": 1
+    },
+    {
+        "Name": "Vanilla Latte",
+        "Description": "Smooth espresso with steamed milk and vanilla syrup, topped with foam.",
+        "Price": 4.49,
+        "PictureUrl": "https://example.com/vanilla_latte.jpg",
+        "CategoryId": 2,
+        "BrandId": 2
+    },
+    {
+        "Name": "Chocolate Mocha",
+        "Description": "Rich espresso and steamed milk with chocolate syrup, topped with whipped cream.",
+        "Price": 5.49,
+        "PictureUrl": "https://example.com/chocolate_mocha.jpg",
+        "CategoryId": 3,
+        "BrandId": 3
+    },
+    {
+        "Name": "Caramel Macchiato",
+        "Description": "Espresso with steamed milk and vanilla, topped with caramel drizzle.",
+        "Price": 5.29,
+        "PictureUrl": "https://example.com/caramel_macchiato.jpg",
+        "CategoryId": 4,
+        "BrandId": 4
+    },
+    {
+        "Name": "Iced Matcha Latte",
+        "Description": "A refreshing iced drink made with matcha green tea, milk, and ice.",
+        "Price": 4.99,
+        "PictureUrl": "https://example.com/iced_matcha_latte.jpg",
+        "CategoryId": 5,
+        "BrandId": 5
+    },
+    {
+        "Name": "Chocolate Cake",
+        "Description": "A rich and moist chocolate cake with a creamy chocolate frosting.",
+        "Price": 3.99,
+        "PictureUrl": "https://example.com/chocolate_cake.jpg",
+        "CategoryId": 6,
+        "BrandId": 6
+    },
+    {
+        "Name": "Glazed Donut",
+        "Description": "A classic glazed donut with a light and fluffy texture.",
+        "Price": 1.29,
+        "PictureUrl": "https://example.com/glazed_donut.jpg",
+        "CategoryId": 7,
+        "BrandId": 7
+    },
+    {
+        "Name": "Greek Salad",
+        "Description": "A fresh salad with cucumbers, tomatoes, olives, and feta cheese.",
+        "Price": 6.99,
+        "PictureUrl": "https://example.com/greek_salad.jpg",
+        "CategoryId": 8,
+        "BrandId": 1
+    },
+    {
+        "Name": "Pumpkin Spice Frappuccino",
+        "Description": "A seasonal favorite with pumpkin spice, coffee, milk, and ice, topped with whipped cream.",
+        "Price": 6.29,
+        "PictureUrl": "https://example.com/pumpkin_spice_frappuccino.jpg",
+        "CategoryId": 1,
+        "BrandId": 2
+    },
+    {
+        "Name": "Hazelnut Latte",
+        "Description": "A warm latte with a nutty hazelnut flavor, perfect for a cozy day.",
+        "Price": 4.79,
+        "PictureUrl": "https://example.com/hazelnut_latte.jpg",
+        "CategoryId": 2,
+        "BrandId": 4
+    },
+    {
+        "Name": "White Chocolate Mocha",
+        "Description": "A rich blend of espresso, white chocolate syrup, and steamed milk, topped with whipped cream.",
+        "Price": 5.79,
+        "PictureUrl": "https://example.com/white_chocolate_mocha.jpg",
+        "CategoryId": 3,
+        "BrandId": 5
+    },
+    {
+        "Name": "Espresso Macchiato",
+        "Description": "A shot of rich espresso marked with a dollop of steamed milk.",
+        "Price": 3.99,
+        "PictureUrl": "https://example.com/espresso_macchiato.jpg",
+        "CategoryId": 4,
+        "BrandId": 7
+    },
+    {
+        "Name": "Green Tea Matcha",
+        "Description": "A creamy matcha drink, hot or iced, made with premium matcha powder and milk.",
+        "Price": 5.29,
+        "PictureUrl": "https://example.com/green_tea_matcha.jpg",
+        "CategoryId": 5,
+        "BrandId": 3
+    },
+    {
+        "Name": "Red Velvet Cake",
+        "Description": "A slice of classic red velvet cake with cream cheese frosting.",
+        "Price": 4.49,
+        "PictureUrl": "https://example.com/red_velvet_cake.jpg",
+        "CategoryId": 6,
+        "BrandId": 6
+    },
+    {
+        "Name": "Chocolate Glazed Donut",
+        "Description": "A soft donut covered in a rich chocolate glaze.",
+        "Price": 1.59,
+        "PictureUrl": "https://example.com/chocolate_glazed_donut.jpg",
+        "CategoryId": 7,
+        "BrandId": 1
+    },
+    {
+        "Name": "Caesar Salad",
+        "Description": "Crisp romaine lettuce, Parmesan, croutons, and Caesar dressing.",
+        "Price": 7.49,
+        "PictureUrl": "https://example.com/caesar_salad.jpg",
+        "CategoryId": 8,
+        "BrandId": 2
+    },
+    {
+        "Name": "Strawberry Frappuccino",
+        "Description": "A refreshing blend of strawberries, milk, and ice, topped with whipped cream.",
+        "Price": 5.49,
+        "PictureUrl": "https://example.com/strawberry_frappuccino.jpg",
+        "CategoryId": 1,
+        "BrandId": 6
+    },
+    {
+        "Name": "Chai Latte",
+        "Description": "A spiced blend of black tea, steamed milk, and chai spices.",
+        "Price": 4.99,
+        "PictureUrl": "https://example.com/chai_latte.jpg",
+        "CategoryId": 2,
+        "BrandId": 7
+    }
+]
