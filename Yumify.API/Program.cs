@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using Yumify.API.Helper;
 using Yumify.API.Helper.Mapping;
 using Yumify.API.Middlewares;
@@ -42,8 +43,8 @@ namespace Yumify.API
             {
                 option.InvalidModelStateResponseFactory = (options =>
                 {
-                    var errors = options.ModelState.Where(M => M.Value.Errors.Count > 0)
-                      .SelectMany(M => M.Value.Errors)
+                    var errors = options.ModelState.Where(M => M.Value?.Errors.Count > 0)
+                      .SelectMany(M => M.Value!.Errors)
                       .Select(M => M.ErrorMessage)
                       .ToList();
 
@@ -51,7 +52,7 @@ namespace Yumify.API
 
                     return new BadRequestObjectResult(Response);
                 });
-                
+
             });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -61,6 +62,13 @@ namespace Yumify.API
             builder.Services.AddDbContext<YumifyDbContext>(options => options.UseSqlServer(DefaultCs));
 
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped(typeof(ICart), typeof(CartRepository));
+            builder.Services.AddScoped<IConnectionMultiplexer>
+                ((serviceProvider) =>
+                    {
+                        return ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("redis")!);
+                    }
+                );
 
             var app = builder.Build();
 
