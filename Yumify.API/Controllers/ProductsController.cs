@@ -37,8 +37,11 @@ namespace Yumify.API.Controllers
                 response.Data = MappingProducts;
                 response.StatusCode = 200;
                 response.Message = response.chooseMessage(Ok().StatusCode);
-                var Paginated= new Pagination<IEnumerable<GetProductDTO>>() { PageIndex=specParts.PageIndex,PageSize=specParts.PageSize};
+
+                var ProductsCount = new ProductCountSpec(specParts);
+                var Paginated = new Pagination<IEnumerable<GetProductDTO>>() { PageIndex=specParts.PageIndex,PageSize=specParts.PageSize};
                 Paginated.PageData=response.Data;
+                Paginated.PageCount = await _productsRepo.GetCount(ProductsCount);
                 return Ok(Paginated);
             }
             response.Message = response.chooseMessage(NotFound().StatusCode);

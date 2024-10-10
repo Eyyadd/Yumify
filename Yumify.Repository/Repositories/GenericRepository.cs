@@ -28,8 +28,7 @@ namespace Yumify.Repository.Repositories
 
         public async Task<IEnumerable<T>> GetAll()
         {
-            if (typeof(T) == typeof(Product))
-                return (IEnumerable<T>) await _yumifyDb.Products.Include(P => P.Brand).Include(P => P.Category).ToListAsync();
+            
             return await _yumifyDb.Set<T>().ToListAsync();
         }
 
@@ -38,13 +37,14 @@ namespace Yumify.Repository.Repositories
           return await SpecificationEvaluator<T>.GetQuery(_yumifyDb.Set<T>(), spec).ToListAsync();
         }
 
+        public async Task<int> GetCount(ISpecification<T> spec)
+        {
+            return await _yumifyDb.Set<T>().Where(spec.condition).CountAsync();
+            //await SpecificationEvaluator<T>.GetQuery(_yumifyDb.Set<T>(), spec).CountAsync();
+        }
+
         public async Task<T?> GetById(int id)
         {
-            //if(typeof(T) == typeof(Product))
-            //    return await _yumifyDb.Products.Where(P=>P.Id==id)
-            //        .Include(P=>P.Brand)
-            //        .Include(P=>P.Category)
-            //        .FirstOrDefaultAsync() as T;
             return await _yumifyDb.Set<T>().FindAsync(id);
         }
     }
