@@ -1,18 +1,21 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Yumify.API.Helper;
 using Yumify.Core.Entities;
 using Yumify.Core.IRepository;
+using Yumify.Service.DTO.Cart;
 
 namespace Yumify.API.Controllers
 {
     public class CartsController : BaseAPIController
     {
         private readonly ICart _cart;
+        private readonly IMapper _mapper;
 
-        public CartsController(ICart cart)
+        public CartsController(ICart cart, IMapper mapper)
         {
             _cart = cart;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
@@ -34,10 +37,11 @@ namespace Yumify.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Cart>> CreateCart(Cart cart)
+        public async Task<ActionResult<CreateUpdateCartDto>> CreateUpdateCart(CreateUpdateCartDto cartDto)
         {
             var Response = new GeneralResponse(BadRequest().StatusCode);
-            var CreatedCart = await _cart.CreateUpdateCart(cart);
+            var mappedCart = _mapper.Map<Cart>(cartDto);
+            var CreatedCart = await _cart.CreateUpdateCart(mappedCart);
             if (CreatedCart is not null)
             {
                 Response.StatusCode = Ok().StatusCode;

@@ -1,6 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 using Yumify.API.Helper;
@@ -23,20 +21,7 @@ namespace Yumify.API
             var DefaultCs = builder.Configuration.GetConnectionString("DefaultCs");
 
             builder.Services.AddControllers();
-            //    .ConfigureApiBehaviorOptions(option =>
-            //{
-            //    option.InvalidModelStateResponseFactory = (options =>
-            //    {
-            //        var errors = options.ModelState.Where(M => M.Value.Errors.Count > 0)
-            //          .SelectMany(M => M.Value.Errors)
-            //          .Select(M=>M.ErrorMessage)
-            //          .ToList();
-
-            //        var Response=new GeneralResponseValidation(400, errors,"Bad Request");
-
-            //        return new BadRequestObjectResult(Response);
-            //    });
-            //});
+                //.ConfigureApiBehaviorOptions(option => { option.SuppressModelStateInvalidFilter = true; } );
 
             builder.Services.AddAutoMapper(typeof(Mapping));
             builder.Services.Configure<ApiBehaviorOptions>(option =>
@@ -54,6 +39,8 @@ namespace Yumify.API
                 });
 
             });
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
