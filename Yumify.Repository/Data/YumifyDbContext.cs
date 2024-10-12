@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using Yumify.Core.Entities;
 
 namespace Yumify.Repository.Data
 {
-    public class YumifyDbContext:DbContext
+    public class YumifyDbContext:IdentityDbContext
     {
         public YumifyDbContext(DbContextOptions<YumifyDbContext> dbContextOptions):base(dbContextOptions) { }
 
