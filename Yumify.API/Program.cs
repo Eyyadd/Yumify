@@ -1,12 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 using Yumify.API.Helper;
 using Yumify.API.Helper.Mapping;
 using Yumify.API.Middlewares;
+using Yumify.Core.Entities.IdentityEntities;
 using Yumify.Core.IRepository;
+using Yumify.Core.IServices;
 using Yumify.Repository.Data;
 using Yumify.Repository.Data.DataSeeding;
+using Yumify.Repository.IDentity;
+using Yumify.Repository.IDentity.DataSeeding;
 using Yumify.Repository.Repositories;
 
 namespace Yumify.API
@@ -19,9 +25,10 @@ namespace Yumify.API
 
             // Add services to the container.
             var DefaultCs = builder.Configuration.GetConnectionString("DefaultCs");
+            var IdentityCs = builder.Configuration.GetConnectionString("IdentityCs");
 
             builder.Services.AddControllers();
-                //.ConfigureApiBehaviorOptions(option => { option.SuppressModelStateInvalidFilter = true; } );
+            //.ConfigureApiBehaviorOptions(option => { option.SuppressModelStateInvalidFilter = true; } );
 
             builder.Services.AddAutoMapper(typeof(Mapping));
             builder.Services.Configure<ApiBehaviorOptions>(option =>
@@ -50,18 +57,29 @@ namespace Yumify.API
 
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(ICart), typeof(CartRepository));
+            builder.Services.AddScoped(typeof(IAuth), typeof(AuthenticationService));
             builder.Services.AddScoped<IConnectionMultiplexer>
                 ((serviceProvider) =>
                     {
                         return ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("redis")!);
                     }
                 );
+            builder.Services.AddDbContext<IdentityYumifyDbContext>
+                (options =>
+                {
+                    options.UseSqlServer(IdentityCs);
+                });
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityYumifyDbContext>();
 
             var app = builder.Build();
 
             var Scope = app.Services.CreateScope();   // هنا كريت سكوب فيه كل السيرفيس اللي حصلها ريجستر
             var service = Scope.ServiceProvider; // هنا علشان اقدر اطلب اوبجيكت من الموجودين في الاسكوب 
             var YumifyContext = service.GetRequiredService<YumifyDbContext>(); // كدة معايا اوبجيكت منه 
+            var IdentityYumifyContext = service.GetRequiredService<IdentityYumifyDbContext>();
+
+            var UserMangerIDentity=service.GetRequiredService<UserManager<ApplicationUser>>();    
 
             var loggerFact = service.GetRequiredService<ILoggerFactory>();
 
@@ -69,6 +87,9 @@ namespace Yumify.API
             {
                 await YumifyContext.Database.MigrateAsync();
                 await DataSeed.SeedAsync(YumifyContext);
+
+                await IdentityYumifyContext.Database.MigrateAsync();
+                await YumifyIdentitySeeding.IdentitySeeding(UserMangerIDentity,IdentityYumifyContext);
             }
             catch (Exception ex)
             {

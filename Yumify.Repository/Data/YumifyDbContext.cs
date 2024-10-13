@@ -10,7 +10,7 @@ using Yumify.Core.Entities;
 
 namespace Yumify.Repository.Data
 {
-    public class YumifyDbContext:IdentityDbContext
+    public class YumifyDbContext:DbContext
     {
         public YumifyDbContext(DbContextOptions<YumifyDbContext> dbContextOptions):base(dbContextOptions) { }
 
