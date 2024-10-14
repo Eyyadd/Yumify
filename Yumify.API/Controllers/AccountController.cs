@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Yumify.API.Helper;
 using Yumify.Core.Entities.IdentityEntities;
+using Yumify.Core.IServices;
 using Yumify.Service.DTO.User;
 
 namespace Yumify.API.Controllers
@@ -12,11 +13,13 @@ namespace Yumify.API.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IAuthSerivce _authServices;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IAuthSerivce auth)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _authServices = auth;
         }
 
         [HttpPost("Login")]
@@ -36,7 +39,7 @@ namespace Yumify.API.Controllers
                     {
                         DisplayName = VaildUser.DisplayName,
                         Email = VaildUser.Email!,
-                        Token="No Token for now"
+                        Token = await _authServices.CreateToken(VaildUser)
                     };
                     return Ok(Response);
                 }
@@ -69,7 +72,7 @@ namespace Yumify.API.Controllers
                     {
                         DisplayName = user.DisplayName,
                         Email = user.Email,
-                        Token = "Not porvided yet"
+                        Token = await _authServices.CreateToken(user)
                     };
 
                     return Ok(Response);

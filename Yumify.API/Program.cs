@@ -14,6 +14,7 @@ using Yumify.Repository.Data.DataSeeding;
 using Yumify.Repository.IDentity;
 using Yumify.Repository.IDentity.DataSeeding;
 using Yumify.Repository.Repositories;
+using Yumify.Service.Services;
 
 namespace Yumify.API
 {
@@ -57,7 +58,7 @@ namespace Yumify.API
 
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(ICart), typeof(CartRepository));
-            builder.Services.AddScoped(typeof(IAuth), typeof(AuthenticationService));
+            builder.Services.AddScoped(typeof(IAuthSerivce), typeof(AuthService));
             builder.Services.AddScoped<IConnectionMultiplexer>
                 ((serviceProvider) =>
                     {

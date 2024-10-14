@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -13,12 +15,12 @@ using Yumify.Core.IServices;
 
 namespace Yumify.Service.Services
 {
-    public class AuthenticationService : IAuth
+    public class AuthService : IAuthSerivce
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private IConfiguration _configuration;
 
-        public AuthenticationService(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public AuthService(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
@@ -29,7 +31,7 @@ namespace Yumify.Service.Services
             {
                 new Claim(ClaimTypes.Name,applicationUser.DisplayName),
                 new Claim(ClaimTypes.Email,applicationUser.Email!),
-                new Claim(ClaimTypes.StreetAddress,applicationUser.Address.Street)
+                new Claim(ClaimTypes.StreetAddress,applicationUser.Address?.Street??"No Address Provided")
             };
 
             var userRoles = await _userManager.GetRolesAsync(applicationUser);
@@ -41,8 +43,15 @@ namespace Yumify.Service.Services
             var key = Encoding.UTF8.GetBytes(secretKey!);
             var authKey = new SymmetricSecurityKey(key);
 
-            throw new NotImplementedException();
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Iss"],
+                audience: _configuration["Jwt:Aud"],
+                expires:DateTime.Now.AddDays(1),
+                signingCredentials: new SigningCredentials(authKey,SecurityAlgorithms.HmacSha256),
+                claims: PrivateClaims
+                );
 
+           return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
