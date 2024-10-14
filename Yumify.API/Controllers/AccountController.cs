@@ -101,21 +101,18 @@ namespace Yumify.API.Controllers
         {
 
             var Response = new GeneralResponse(NotFound().StatusCode, "not found this user");
-            var CheckMail = User.FindFirstValue(ClaimTypes.Email);
 
-            if (CheckMail is not null)
+            var CurrentUser = await _userManager.GetUserAddressByEmail(User);
+            if (CurrentUser is not null)
             {
-                var CurrentUser = await _userManager.GetUserAddressByEmail(CheckMail);
-                if (CurrentUser is not null)
-                {
-                    var mappedUser = _mapper.Map<UserDto>(CurrentUser);
-                    Response.StatusCode = Ok().StatusCode;
-                    Response.Message = Response.chooseMessage(200);
-                    Response.Data = mappedUser;
-                    return Ok(Response);
-                }
-
+                var mappedUser = _mapper.Map<UserDto>(CurrentUser);
+                mappedUser.Token = await _authServices.CreateToken(CurrentUser);
+                Response.StatusCode = Ok().StatusCode;
+                Response.Message = Response.chooseMessage(200);
+                Response.Data = mappedUser;
+                return Ok(Response);
             }
+
             return BadRequest(Response);
         }
 
@@ -124,19 +121,16 @@ namespace Yumify.API.Controllers
         public async Task<ActionResult<AddressDto>> CurrentUserAddressAsync()
         {
             var Response = new GeneralResponse(NotFound().StatusCode, "not found this user");
-            var mail = User.FindFirstValue(ClaimTypes.Email);
-            if (mail is not null)
-            {
-                var CurrentUser = await _userManager.GetUserAddressByEmail(mail);
-                if (CurrentUser is not null)
-                {
-                    var mappedAddress = _mapper.Map<AddressDto>(CurrentUser.Address);
-                    Response.StatusCode = Ok().StatusCode;
-                    Response.Message = Response.chooseMessage(200);
-                    Response.Data = mappedAddress;
 
-                    return Ok(Response);
-                }
+            var CurrentUser = await _userManager.GetUserAddressByEmail(User);
+            if (CurrentUser is not null)
+            {
+                var mappedAddress = _mapper.Map<AddressDto>(CurrentUser.Address);
+                Response.StatusCode = Ok().StatusCode;
+                Response.Message = Response.chooseMessage(200);
+                Response.Data = mappedAddress;
+
+                return Ok(Response);
             }
 
             return BadRequest(Response);
@@ -148,32 +142,48 @@ namespace Yumify.API.Controllers
         public async Task<ActionResult<UpdateUserAddress>> UpdateAddress(UpdateUserAddress newAddress)
         {
             var mappedAddres = _mapper.Map<Address>(newAddress);
-            var mail = User.FindFirstValue(ClaimTypes.Email);
+            var Response = new GeneralResponse(NotFound().StatusCode, "not found this user");
+            var CurrentUser = await _userManager.GetUserAddressByEmail(User);
+            if (CurrentUser is not null)
+            {
+                mappedAddres.Id = CurrentUser.Address.Id;
+                mappedAddres.ApplicationUserId = CurrentUser.Id;
+                CurrentUser.Address = mappedAddres;
+                var result = await _userManager.UpdateAsync(CurrentUser);
+                if (result.Succeeded)
+                {
+                    Response.StatusCode = Ok().StatusCode;
+                    Response.Message = "Address Updated Successfully";
+                    Response.Data = newAddress;
+
+                    return Ok(Response);
+                }
+            }
+            return BadRequest(Response);
+        }
+
+        [HttpPost("UpdatePassword")]
+        [Authorize]
+        public async Task<ActionResult<UpdatePasswordDto>> ChangePassword(UpdatePasswordDto updatePasswordDto)
+        {
+            var CurrentUser = await _userManager.GetUserAddressByEmail(User);
             var Response = new GeneralResponse(NotFound().StatusCode, "not found this user");
 
-            if (mail is not null)
+            if (CurrentUser is not null)
             {
-                var CurrentUser = await _userManager.GetUserAddressByEmail(mail);
-                if (CurrentUser is not null)
+                var checkpassword = await _userManager.ChangePasswordAsync(CurrentUser, updatePasswordDto.OldPassword, updatePasswordDto.NewPassword);
+                if (checkpassword.Succeeded)
                 {
-                    mappedAddres.Id = CurrentUser.Address.Id;
-                    mappedAddres.FirstName=CurrentUser.DisplayName.Split(' ')[0];
-                    mappedAddres.LastName=CurrentUser.DisplayName.Split(' ')[1];
-                    mappedAddres.ApplicationUserId = CurrentUser.Id;
-                    CurrentUser.Address = mappedAddres;
-                    var result = await _userManager.UpdateAsync(CurrentUser);
-                    if (result.Succeeded)
-                    {
-                        Response.StatusCode = Ok().StatusCode;
-                        Response.Message = "Address Updated Successfully";
-                        Response.Data = newAddress;
+                    Response.StatusCode=Ok().StatusCode;
+                    Response.Message = "Password Updated Sucessfully";
+                    Response.Data = updatePasswordDto;
 
-                        return Ok(Response);
-                    }
+                    return Ok(Response);
                 }
             }
 
             return BadRequest(Response);
         }
+
     }
 }
