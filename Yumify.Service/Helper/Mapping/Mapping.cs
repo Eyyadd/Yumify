@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Yumify.API.DTO.Products;
 using Yumify.Core.Entities;
+using Yumify.Core.Entities.IdentityEntities;
 using Yumify.Service.DTO.Cart;
+using Yumify.Service.DTO.User;
 
 namespace Yumify.API.Helper.Mapping
 {
@@ -16,6 +18,10 @@ namespace Yumify.API.Helper.Mapping
 
             CreateMap<CreateUpdateCartDto,Cart>().ReverseMap();
             CreateMap<CartItemsDto,CartItems>().ReverseMap();
+
+            CreateMap<Address,AddressDto>().ReverseMap();
+            CreateMap<ApplicationUser,UserDto>().ReverseMap();
+            CreateMap<Address, UpdateUserAddress>().ReverseMap();
         }
     }
 }

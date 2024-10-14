@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
+using System.Text;
 using Yumify.API.Helper;
 using Yumify.API.Helper.Mapping;
 using Yumify.API.Middlewares;
@@ -54,7 +56,7 @@ namespace Yumify.API
             builder.Services.AddSwaggerGen();
 
             //for lazy loading we use this .UseLazyLoadingProxies()
-            builder.Services.AddDbContext<YumifyDbContext>(options => options.UseSqlServer(DefaultCs));
+            builder.Services.AddDbContext<YumifyDbContext>(options => options.UseLazyLoadingProxies().UseSqlServer(DefaultCs));
 
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(ICart), typeof(CartRepository));
@@ -73,6 +75,23 @@ namespace Yumify.API
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityYumifyDbContext>();
 
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme= JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = builder.Configuration["Jwt:Iss"],
+                        ValidateAudience = true,
+                        ValidAudience = builder.Configuration["Jwt:Aud"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecreteKey"]!)),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
             var app = builder.Build();
 
             var Scope = app.Services.CreateScope();   // هنا كريت سكوب فيه كل السيرفيس اللي حصلها ريجستر
@@ -80,7 +99,7 @@ namespace Yumify.API
             var YumifyContext = service.GetRequiredService<YumifyDbContext>(); // كدة معايا اوبجيكت منه 
             var IdentityYumifyContext = service.GetRequiredService<IdentityYumifyDbContext>();
 
-            var UserMangerIDentity=service.GetRequiredService<UserManager<ApplicationUser>>();    
+            var UserMangerIDentity = service.GetRequiredService<UserManager<ApplicationUser>>();
 
             var loggerFact = service.GetRequiredService<ILoggerFactory>();
 
@@ -90,7 +109,7 @@ namespace Yumify.API
                 await DataSeed.SeedAsync(YumifyContext);
 
                 await IdentityYumifyContext.Database.MigrateAsync();
-                await YumifyIdentitySeeding.IdentitySeeding(UserMangerIDentity,IdentityYumifyContext);
+                await YumifyIdentitySeeding.IdentitySeeding(UserMangerIDentity, IdentityYumifyContext);
             }
             catch (Exception ex)
             {

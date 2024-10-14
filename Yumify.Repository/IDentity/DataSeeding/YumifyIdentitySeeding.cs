@@ -11,16 +11,17 @@ namespace Yumify.Repository.IDentity.DataSeeding
 {
     public static class YumifyIdentitySeeding
     {
-        public static async Task IdentitySeeding(UserManager<ApplicationUser> userManager,IdentityYumifyDbContext identityYumifyDbContext)
+        public static async Task IdentitySeeding(UserManager<ApplicationUser> userManager, IdentityYumifyDbContext identityYumifyDbContext)
         {
             if (!userManager.Users.Any())
             {
                 var jsonData = File.ReadAllText("../Yumify.Repository/IDentity/DataSeeding/Users.json");
                 var serializedData = JsonSerializer.Deserialize<List<ApplicationUser>>(jsonData);
-                if (serializedData?.Count()>0)
+                if (serializedData?.Count() > 0)
                 {
-                    foreach (var user in serializedData) { 
-                        await userManager.CreateAsync(user,user.PasswordHash!);
+                    foreach (var user in serializedData)
+                    {
+                        await userManager.CreateAsync(user, user.PasswordHash!);
                     }
                 }
             }
@@ -32,8 +33,8 @@ namespace Yumify.Repository.IDentity.DataSeeding
                 {
                     foreach (var address in serializedData)
                     {
-                        await identityYumifyDbContext.Addresses.AddAsync(address);
-                        await identityYumifyDbContext.SaveChangesAsync();
+                        var CheckCreate = await identityYumifyDbContext.Addresses.AddAsync(address);
+                        var Written = await identityYumifyDbContext.SaveChangesAsync();
 
                     }
                 }

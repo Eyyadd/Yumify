@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -31,7 +30,8 @@ namespace Yumify.Service.Services
             {
                 new Claim(ClaimTypes.Name,applicationUser.DisplayName),
                 new Claim(ClaimTypes.Email,applicationUser.Email!),
-                new Claim(ClaimTypes.StreetAddress,applicationUser.Address?.Street??"No Address Provided")
+                new Claim(ClaimTypes.StreetAddress,applicationUser.Address?.Street??"No Address Provided"),
+                new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
             };
 
             var userRoles = await _userManager.GetRolesAsync(applicationUser);
