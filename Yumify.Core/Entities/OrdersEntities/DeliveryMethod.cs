@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Yumify.Core.Entities.OrdersEntities
 {
-    public class DeliveryMethod
+    public class DeliveryMethod:BaseEntity
     {
 
-        [Key]
-        public int Id { get; set; }
+        //[Key]
+        //public int Id { get; set; }
         public required string Name { get; set; }
         public required string Description { get; set; }
         public required string DeliveryTime { get; set; }

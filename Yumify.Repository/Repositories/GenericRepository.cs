@@ -28,13 +28,13 @@ namespace Yumify.Repository.Repositories
 
         public async Task<IEnumerable<T>> GetAll()
         {
-            
+
             return await _yumifyDb.Set<T>().ToListAsync();
         }
 
         public async Task<IEnumerable<T>> GetAllWithSpec(ISpecification<T> spec)
         {
-          return await SpecificationEvaluator<T>.GetQuery(_yumifyDb.Set<T>(), spec).ToListAsync();
+            return await SpecificationEvaluator<T>.GetQuery(_yumifyDb.Set<T>(), spec).ToListAsync();
         }
 
         public async Task<int> GetCount(ISpecification<T> spec)
@@ -46,6 +46,16 @@ namespace Yumify.Repository.Repositories
         public async Task<T?> GetById(int id)
         {
             return await _yumifyDb.Set<T>().FindAsync(id);
+        }
+
+        public async Task Add(T Entity)
+            => await _yumifyDb.AddAsync(Entity);
+        public void Update(T Entity)
+            => _yumifyDb.Update(Entity);
+        public void Delete(int id)
+        {
+            var entity = GetById(id);
+             _yumifyDb.Remove(entity);
         }
     }
 }

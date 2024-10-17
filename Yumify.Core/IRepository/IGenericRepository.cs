@@ -15,5 +15,8 @@ namespace Yumify.Core.IRepository
         Task<IEnumerable<T>> GetAllWithSpec(ISpecification<T> spec);
         Task<T?> GetByIdWithSpec(ISpecification<T> spec);
         Task<int> GetCount(ISpecification<T> spec);
+        Task Add(T Entity);
+        void Update(T Entity);
+        void Delete(int id);
     }
 }
