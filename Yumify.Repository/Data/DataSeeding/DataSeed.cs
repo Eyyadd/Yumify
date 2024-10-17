@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Yumify.Core.Entities;
+using Yumify.Core.Entities.OrdersEntities;
 
 namespace Yumify.Repository.Data.DataSeeding
 {
@@ -15,6 +16,7 @@ namespace Yumify.Repository.Data.DataSeeding
             var DbBrands=dbContext.Brands;
             var DbCategories=dbContext.Categories;
             var DbProducts=dbContext.Products;
+            var DbDelivery = dbContext.deliveryMethods;
             //Brands
             if (DbBrands.Count() == 0)
             {
@@ -80,6 +82,28 @@ namespace Yumify.Repository.Data.DataSeeding
                     foreach (var Product in Products)
                     {
                         await DbProducts.AddAsync(Product);
+                    }
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+
+            if(!DbDelivery.Any())
+            {
+                var deliveryData = File.ReadAllText("../Yumify.Repository/Data/DataSeeding/delivery.json");
+                var deliverySerialzied= JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryData);
+                if (deliverySerialzied?.Count >0)
+                {
+                    deliverySerialzied= deliverySerialzied.Select(D => new DeliveryMethod
+                    {
+                        Name= D.Name,
+                        DeliveryTime = D.DeliveryTime,
+                        Description= D.Description,
+                        Cost = D.Cost,
+                    }).ToList();
+
+                    foreach (var deliverymethod in deliverySerialzied)
+                    {
+                        await DbDelivery.AddAsync(deliverymethod);
                     }
                     await dbContext.SaveChangesAsync();
                 }

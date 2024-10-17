@@ -8,6 +8,7 @@ namespace Yumify.Core.Entities.OrdersEntities
 {
     public class OrderAddress
     {
+        public int Id { get; set; }
         public required string FirstName { get; set; }
         public required string LastName { get; set;}
         public required string Street { get; set; }

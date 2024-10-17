@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Yumify.Core.Entities;
+using Yumify.Core.Entities.OrdersEntities;
 
 namespace Yumify.Repository.Data
 {
@@ -21,5 +22,8 @@ namespace Yumify.Repository.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductBrand> Brands { get; set; }
         public DbSet<ProductCategory> Categories { get; set; }
+        public DbSet<DeliveryMethod> deliveryMethods { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
     }
 }

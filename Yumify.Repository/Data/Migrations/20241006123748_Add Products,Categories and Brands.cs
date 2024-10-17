@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Yumify.Repository.Data.Migration
+namespace Yumify.Repository.Data.Migrations
 {
     /// <inheritdoc />
     public partial class AddProductsCategoriesandBrands : Microsoft.EntityFrameworkCore.Migrations.Migration
