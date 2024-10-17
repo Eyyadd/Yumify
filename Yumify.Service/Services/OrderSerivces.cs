@@ -4,6 +4,7 @@ using Yumify.Core.Entities.IdentityEntities;
 using Yumify.Core.Entities.OrdersEntities;
 using Yumify.Core.IRepository;
 using Yumify.Core.IServices;
+using Yumify.Core.Specification;
 
 namespace Yumify.Service.Services
 {
@@ -81,14 +82,20 @@ namespace Yumify.Service.Services
             return AllDeliveryMethods as IReadOnlyList<DeliveryMethod>;
         }
 
-        public Task<Order> GetOrderByIdForUserAsync(int OrderId, string CutomerMail)
+        public async Task<Order> GetOrderByIdForUserAsync(int OrderId, string CutomerMail)
         {
-            throw new NotImplementedException();
+            var spec = new OrderSpecification(CutomerMail, OrderId);
+            var Orders = await _OrderRepos.GetByIdWithSpec(spec);
+
+            return Orders;
         }
 
-        public Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string CutomerMail)
+        public async Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string CutomerMail)
         {
-            throw new NotImplementedException();
+            var spec = new OrderSpecification(CutomerMail);
+            var Orders =await _OrderRepos.GetAllWithSpec(spec);
+
+            return Orders as IReadOnlyList<Order>;
         }
     }
 }

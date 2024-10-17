@@ -59,5 +59,41 @@ namespace Yumify.API.Controllers
             Response.Message = Response.chooseMessage(BadRequest().StatusCode);
             return BadRequest(Response);
         }
+
+        [HttpGet("GetOrdersForUser")]
+        [Authorize]
+        public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser()
+        {
+            var Response = new GeneralResponse(BadRequest().StatusCode);
+            var CustomerMail = User.FindFirstValue(ClaimTypes.Email) ??string.Empty;
+            var OrdersByUser=await _orderServices.GetOrdersForUserAsync(CustomerMail);
+            if (OrdersByUser is not null)
+            {
+                Response.StatusCode = Ok().StatusCode;
+                Response.Message= "orders returned Sucessfully";
+                Response.Data = OrdersByUser;
+                return Ok(Response);
+            }
+            Response.Message = Response.chooseMessage(BadRequest().StatusCode);
+            return BadRequest(Response);
+        }
+
+        [HttpGet("GetOrderByIdForUser")]
+        [Authorize]
+        public async Task<ActionResult<Order>> GetOrderByIdForUser(int orderId)
+        {
+            var Response = new GeneralResponse(BadRequest().StatusCode);
+            var CustomerMail = User.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
+            var OrdersByUser = await _orderServices.GetOrderByIdForUserAsync(orderId,CustomerMail);
+            if (OrdersByUser is not null)
+            {
+                Response.StatusCode = Ok().StatusCode;
+                Response.Message = "orders returned Sucessfully";
+                Response.Data = OrdersByUser;
+                return Ok(Response);
+            }
+            Response.Message = Response.chooseMessage(BadRequest().StatusCode);
+            return BadRequest(Response);
+        }
     }
 }

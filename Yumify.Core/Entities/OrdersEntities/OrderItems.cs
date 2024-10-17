@@ -8,9 +8,10 @@ namespace Yumify.Core.Entities.OrdersEntities
 {
     public class OrderItems : BaseEntity
     {
-        public ProductItemOrder Product {  get; set; }
+        public virtual ProductItemOrder Product {  get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }   // price for the product as item { discounted or not }
+
         //public Order Order { get; set; } = null!;
 
         public OrderItems() { }
