@@ -12,7 +12,7 @@ namespace Yumify.Service.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICart _cart;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IGenericRepository<Product> _prodRepos;
+        private IGenericRepository<Product> _prodRepos;
         private IGenericRepository<Order> _OrderRepos;
         private IGenericRepository<DeliveryMethod> _deliveryMethodRepos;
 
@@ -39,6 +39,7 @@ namespace Yumify.Service.Services
                 foreach (var prod in Cart.Items)
                 {
                     var product = await _prodRepos.GetById(prod.Id);
+
                     var ProdcutItem = new ProductItemOrder()
                     {
                         PictreUrl = prod.PictureUrl,
@@ -74,9 +75,10 @@ namespace Yumify.Service.Services
             return order;
         }
 
-        public Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodAsync()
+        public async Task<IReadOnlyList<DeliveryMethod>?> GetDeliveryMethodAsync()
         {
-            throw new NotImplementedException();
+            var AllDeliveryMethods = await _deliveryMethodRepos.GetAll();
+            return AllDeliveryMethods as IReadOnlyList<DeliveryMethod>;
         }
 
         public Task<Order> GetOrderByIdForUserAsync(int OrderId, string CutomerMail)

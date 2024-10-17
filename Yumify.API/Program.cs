@@ -30,7 +30,12 @@ namespace Yumify.API
             var DefaultCs = builder.Configuration.GetConnectionString("DefaultCs");
             var IdentityCs = builder.Configuration.GetConnectionString("IdentityCs");
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.MaxDepth = 64;
+                    options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
             //.ConfigureApiBehaviorOptions(option => { option.SuppressModelStateInvalidFilter = true; } );
 
             builder.Services.AddAutoMapper(typeof(Mapping));
@@ -61,6 +66,8 @@ namespace Yumify.API
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(ICart), typeof(CartRepository));
             builder.Services.AddScoped(typeof(IAuthSerivce), typeof(AuthService));
+            builder.Services.AddScoped(typeof(IUnitOfWork), typeof(Unitofwork));
+            builder.Services.AddScoped(typeof(IOrderServices), typeof(OrderSerivces));
             builder.Services.AddScoped<IConnectionMultiplexer>
                 ((serviceProvider) =>
                     {
@@ -78,7 +85,7 @@ namespace Yumify.API
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme= JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
                 .AddJwtBearer(options =>
                 {

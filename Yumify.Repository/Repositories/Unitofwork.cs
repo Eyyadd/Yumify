@@ -23,10 +23,10 @@ namespace Yumify.Repository.Repositories
 
         public IGenericRepository<T> Myrepository<T>() where T : BaseEntity 
         {
-            var key =typeof(BaseEntity).Name;
+            var key =typeof(T).Name;
             if (!_Repos.ContainsKey(key))
             {
-                var rep= new GenericRepository<T>(_dbContext) as GenericRepository<BaseEntity> ;
+                var rep= new GenericRepository<T>(_dbContext) ;
                 _Repos.Add(key, rep);
             }
             return _Repos[key] as IGenericRepository<T>;

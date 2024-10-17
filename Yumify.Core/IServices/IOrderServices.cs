@@ -12,6 +12,6 @@ namespace Yumify.Core.IServices
         Task<Order> CreateOrderAsync(string CutomerMail, string CartId,int deliveryMethodId,OrderAddress orderAddress);
         Task<IReadOnlyList<Order>> GetOrdersForUserAsync(string CutomerMail);
         Task<Order> GetOrderByIdForUserAsync(int OrderId, string CutomerMail);
-        Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodAsync();
+        Task<IReadOnlyList<DeliveryMethod>?> GetDeliveryMethodAsync();
     }
 }

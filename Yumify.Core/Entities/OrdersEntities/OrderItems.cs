@@ -13,6 +13,7 @@ namespace Yumify.Core.Entities.OrdersEntities
         public decimal Price { get; set; }   // price for the product as item { discounted or not }
         //public Order Order { get; set; } = null!;
 
+        public OrderItems() { }
         public OrderItems(ProductItemOrder product,int quantity , decimal price)
         {
             Product = product;
