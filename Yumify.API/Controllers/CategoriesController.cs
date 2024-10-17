@@ -17,11 +17,10 @@ namespace Yumify.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBrands()
+        public async Task<IActionResult> GetCategories()
         {
             var response = new GeneralResponse(Ok().StatusCode);
-            var spec = new BaseSpecification<ProductCategory>();
-            var AllCategories = await _CategoryRepos.GetAllWithSpec(spec);
+            var AllCategories = await _CategoryRepos.GetAll();
             if (AllCategories is not null)
             {
                 response.Message = response.chooseMessage(Ok().StatusCode);
@@ -34,11 +33,10 @@ namespace Yumify.API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetBrands(int id)
+        public async Task<IActionResult> GetCategory(int id)
         {
             var response = new GeneralResponse(Ok().StatusCode);
-            var spec = new BaseSpecification<ProductCategory>(C=>C.Id==id);
-            var Category = await _CategoryRepos.GetAllWithSpec(spec);
+            var Category = await _CategoryRepos.GetById(id);
             if (Category is not null)
             {
                 response.Message = response.chooseMessage(Ok().StatusCode);

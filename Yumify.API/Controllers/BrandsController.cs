@@ -20,8 +20,7 @@ namespace Yumify.API.Controllers
         public async Task<IActionResult> GetBrands()
         {
             var response = new GeneralResponse(Ok().StatusCode);
-            var spec = new BaseSpecification<ProductBrand>();
-            var allBrands = await _BrandRepo.GetAllWithSpec(spec);
+            var allBrands = await _BrandRepo.GetAll();
             if (allBrands is not null)
             {
                 response.Message=response.chooseMessage(Ok().StatusCode);
@@ -37,8 +36,7 @@ namespace Yumify.API.Controllers
         public async Task<IActionResult> GetBrands(int id)
         {
             var response = new GeneralResponse(Ok().StatusCode);
-            var spec = new BaseSpecification<ProductBrand>(B=>B.Id==id);
-            var allBrands = await _BrandRepo.GetByIdWithSpec(spec);
+            var allBrands = await _BrandRepo.GetById(id);
             if (allBrands is not null)
             {
                 response.Message = response.chooseMessage(Ok().StatusCode);

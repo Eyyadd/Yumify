@@ -56,7 +56,7 @@ namespace Yumify.API
             builder.Services.AddSwaggerGen();
 
             //for lazy loading we use this .UseLazyLoadingProxies()
-            builder.Services.AddDbContext<YumifyDbContext>(options => options.UseLazyLoadingProxies().UseSqlServer(DefaultCs));
+            builder.Services.AddDbContext<YumifyDbContext>(options => options.UseSqlServer(DefaultCs));
 
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped(typeof(ICart), typeof(CartRepository));
