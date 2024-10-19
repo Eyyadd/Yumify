@@ -17,7 +17,7 @@ namespace Yumify.Core.Entities.OrdersEntities
         public required string DeliveryTime { get; set; }
         public decimal Cost { get; set; }
 
-        public ICollection<Order?> Orders { get; set; }
+        public virtual ICollection<Order?> Orders { get; set; }
 
     }
 }

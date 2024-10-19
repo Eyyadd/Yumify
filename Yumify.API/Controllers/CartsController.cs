@@ -9,20 +9,20 @@ namespace Yumify.API.Controllers
 {
     public class CartsController : BaseAPIController
     {
-        private readonly ICart _cart;
+        private readonly ICartRespository _cart;
         private readonly IMapper _mapper;
 
-        public CartsController(ICart cart, IMapper mapper)
+        public CartsController(ICartRespository cart, IMapper mapper)
         {
             _cart = cart;
             _mapper = mapper;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetCart(string id)
+        public async Task<ActionResult<Cart>> GetCart(string id)
         {
             var Response = new GeneralResponse(BadRequest().StatusCode);
-            var cart = await _cart.GetCart(id);
+            var cart = await _cart.GetCartAsync(id);
             if (cart is not null)
             {
                 Response.StatusCode = Ok().StatusCode;
@@ -41,7 +41,7 @@ namespace Yumify.API.Controllers
         {
             var Response = new GeneralResponse(BadRequest().StatusCode);
             var mappedCart = _mapper.Map<Cart>(cartDto);
-            var CreatedCart = await _cart.CreateUpdateCart(mappedCart);
+            var CreatedCart = await _cart.CreateUpdateCartAsync(mappedCart);
             if (CreatedCart is not null)
             {
                 Response.StatusCode = Ok().StatusCode;
@@ -58,7 +58,7 @@ namespace Yumify.API.Controllers
         public async Task<ActionResult<bool>> DeleteCart(string id)
         {
             var Response = new GeneralResponse(BadRequest().StatusCode);
-            var deletedCart = await _cart.DeleteCart(id);
+            var deletedCart = await _cart.DeleteCartAsync(id);
             if (deletedCart)
             {
                 Response.StatusCode = Ok().StatusCode;

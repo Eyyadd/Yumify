@@ -4,17 +4,17 @@ namespace Yumify.Core.Entities.OrdersEntities
 {
     public class Order : BaseEntity
     {
-        public required string CustomerMail { get; set; }
+        public string CustomerMail { get; set; }
         public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.UtcNow;
 
         public OrderStatus OrderStatus { get; set; } = OrderStatus.Pending;
 
-        public required OrderAddress ShippingAddress { get; set; }
+        public OrderAddress ShippingAddress { get; set; }
 
         public int? DeliveryMethodId { get; set; }
-        public DeliveryMethod? DeliveryMethod { get; set; }
+        public virtual DeliveryMethod? DeliveryMethod { get; set; }
 
-        public ICollection<OrderItems> Items { get; set; }=new HashSet<OrderItems>();
+        public virtual ICollection<OrderItems> Items { get; set; }=new HashSet<OrderItems>();
 
         public decimal SubtotalPrice { get; set; }  //price for order without delivery cost
 

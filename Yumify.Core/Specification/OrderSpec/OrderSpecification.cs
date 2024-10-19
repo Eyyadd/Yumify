@@ -1,6 +1,7 @@
 ﻿using Yumify.Core.Entities.OrdersEntities;
+using Yumify.Core.Specification;
 
-namespace Yumify.Core.Specification
+namespace Yumify.Repository.SpecificationEvaluator.OrderSpec
 {
     public class OrderSpecification : BaseSpecification<Order>
     {

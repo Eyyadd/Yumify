@@ -16,8 +16,7 @@ namespace Yumify.Repository.Data.Configuration
             builder.Property(O => O.OrderStatus)
                 .HasConversion(
                 status => status.ToString(),
-                status =>(OrderStatus) Enum.Parse(typeof(OrderStatus), status)
-                );
+                status =>(OrderStatus) Enum.Parse(typeof(OrderStatus), status));
 
             builder.OwnsOne(O => O.ShippingAddress, address => address.WithOwner());
 

@@ -64,10 +64,11 @@ namespace Yumify.API
             builder.Services.AddDbContext<YumifyDbContext>(options => options.UseSqlServer(DefaultCs));
 
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            builder.Services.AddScoped(typeof(ICart), typeof(CartRepository));
+            builder.Services.AddScoped(typeof(ICartRespository), typeof(CartRepository));
             builder.Services.AddScoped(typeof(IAuthSerivce), typeof(AuthService));
             builder.Services.AddScoped(typeof(IUnitOfWork), typeof(Unitofwork));
             builder.Services.AddScoped(typeof(IOrderServices), typeof(OrderSerivces));
+            builder.Services.AddScoped(typeof(IProductServices), typeof(ProductService));
             builder.Services.AddScoped<IConnectionMultiplexer>
                 ((serviceProvider) =>
                     {

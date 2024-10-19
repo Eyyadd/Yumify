@@ -14,13 +14,11 @@ namespace Yumify.API.Controllers
     public class OrdersController : BaseAPIController
     {
         private readonly IOrderServices _orderServices;
-        private readonly UserManager<ApplicationUser> _UserManager;
         private readonly IMapper _Mapper;
 
-        public OrdersController(IOrderServices orderServices, UserManager<ApplicationUser> userManager, IMapper mapper)
+        public OrdersController(IOrderServices orderServices, IMapper mapper)
         {
             _orderServices = orderServices;
-            _UserManager = userManager;
             _Mapper = mapper;
         }
 
@@ -32,16 +30,19 @@ namespace Yumify.API.Controllers
             var cutomerMail = User.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
             var mappedAddress = _Mapper.Map<OrderAddress>(createOrderDto.orderAddress);
 
-            var CreatedOrder = await _orderServices.CreateOrderAsync(cutomerMail, createOrderDto.cartId, createOrderDto.deliveryMethodId, mappedAddress);
+            var CreatedOrder = await _orderServices
+                .CreateOrderAsync(cutomerMail, createOrderDto.cartId, createOrderDto.deliveryMethodId, mappedAddress);
+
             if (CreatedOrder is not null)
             {
-                Response.StatusCode=Ok().StatusCode;
+                //var mappedOrder = _Mapper.Map<OrderReturnDto>(createOrderDto);
+                Response.StatusCode = Ok().StatusCode;
                 Response.Message = "Order Created Sucessfully";
                 Response.Data = CreatedOrder;
 
                 return Ok(Response);
             }
-            Response.Message=Response.chooseMessage(BadRequest().StatusCode);
+            Response.Message = Response.chooseMessage(BadRequest().StatusCode);
             return BadRequest(Response);
         }
         [HttpGet]
@@ -65,12 +66,13 @@ namespace Yumify.API.Controllers
         public async Task<ActionResult<IReadOnlyList<Order>>> GetOrdersForUser()
         {
             var Response = new GeneralResponse(BadRequest().StatusCode);
-            var CustomerMail = User.FindFirstValue(ClaimTypes.Email) ??string.Empty;
-            var OrdersByUser=await _orderServices.GetOrdersForUserAsync(CustomerMail);
+            var CustomerMail = User.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
+            var OrdersByUser = await _orderServices.GetOrdersForUserAsync(CustomerMail);
             if (OrdersByUser is not null)
             {
+                //var mappedOrder = _Mapper.Map<OrderReturnDto>(createOrderDto);
                 Response.StatusCode = Ok().StatusCode;
-                Response.Message= "orders returned Sucessfully";
+                Response.Message = "orders returned Sucessfully";
                 Response.Data = OrdersByUser;
                 return Ok(Response);
             }
@@ -84,7 +86,7 @@ namespace Yumify.API.Controllers
         {
             var Response = new GeneralResponse(BadRequest().StatusCode);
             var CustomerMail = User.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
-            var OrdersByUser = await _orderServices.GetOrderByIdForUserAsync(orderId,CustomerMail);
+            var OrdersByUser = await _orderServices.GetOrderByIdForUserAsync(orderId, CustomerMail);
             if (OrdersByUser is not null)
             {
                 Response.StatusCode = Ok().StatusCode;

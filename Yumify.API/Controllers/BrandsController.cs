@@ -1,51 +1,104 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Yumify.API.Helper;
 using Yumify.Core.Entities;
-using Yumify.Core.IRepository;
-using Yumify.Core.Specification;
+using Yumify.Core.IServices;
 
 namespace Yumify.API.Controllers
 {
     public class BrandsController : BaseAPIController
     {
-        private readonly IGenericRepository<ProductBrand> _BrandRepo;
+        private readonly IProductServices _BrandServices;
 
-        public BrandsController(IGenericRepository<ProductBrand> brandRepo)
+        public BrandsController(IProductServices productServices)
         {
-            _BrandRepo = brandRepo;
+            _BrandServices = productServices;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetBrands()
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetBrands()
         {
             var response = new GeneralResponse(Ok().StatusCode);
-            var allBrands = await _BrandRepo.GetAll();
-            if (allBrands is not null)
+            var Brands= await _BrandServices.GetBrandsAsync();
+            if (Brands is not null)
             {
                 response.Message=response.chooseMessage(Ok().StatusCode);
-                response.Data= allBrands;
+                response.Data= Brands;
                 return Ok(response);
             }
-            response.StatusCode = NoContent().StatusCode;
-            response.Message = response.chooseMessage(NoContent().StatusCode);
-            return Ok(response);
+            response.StatusCode = NotFound().StatusCode;
+            response.Message = response.chooseMessage(NotFound().StatusCode);
+            return BadRequest(response);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> GetBrands(int id)
+        public async Task<ActionResult<ProductBrand>> GetBrand(int id)
         {
             var response = new GeneralResponse(Ok().StatusCode);
-            var allBrands = await _BrandRepo.GetById(id);
-            if (allBrands is not null)
+            var Brand= await _BrandServices.GetBrandByIdAsync(id);
+            if (Brand is not null)
             {
                 response.Message = response.chooseMessage(Ok().StatusCode);
-                response.Data = allBrands;
+                response.Data = Brand;
                 return Ok(response);
             }
-            response.StatusCode = NoContent().StatusCode;
-            response.Message = response.chooseMessage(NoContent().StatusCode);
-            return Ok(response);
+            response.StatusCode = NotFound().StatusCode;
+            response.Message = response.chooseMessage(NotFound().StatusCode);
+            return BadRequest(response);
         }
+
+        [HttpPost("AddBrand")]
+        public async Task<ActionResult<ProductBrand>> AddBrands(ProductBrand brand)
+        {
+            var response = new GeneralResponse(Ok().StatusCode);
+            var AddedBrand = await _BrandServices.AddBrandsAsync(brand);
+            if (AddedBrand is not null)
+            {
+                response.Message = "Brand Added Sucessfully";
+                response.Data = AddedBrand;
+                return Ok(response);
+            }
+
+            response.StatusCode = NotFound().StatusCode;
+            response.Message = response.chooseMessage(NotFound().StatusCode);
+            return BadRequest(response);
+        }
+
+        [HttpPut("UpdateBrand")]
+        public async Task<ActionResult<ProductBrand>> UpdateBrand(ProductBrand brand)
+        {
+            var response = new GeneralResponse(Ok().StatusCode);
+
+            var UpdatedBrand = await _BrandServices.UpdateBrandsAsync(brand);
+            if (UpdatedBrand is not null)
+            {
+                response.Message = "Brand Updated Sucessfully";
+                response.Data = UpdatedBrand;
+                return Ok(response);
+            }
+
+            response.StatusCode = NotFound().StatusCode;
+            response.Message = response.chooseMessage(NotFound().StatusCode);
+            return BadRequest(response);
+        }
+
+        [HttpDelete("DeleteBrand")]
+        public async Task<ActionResult<ProductBrand>> DeleteBrand(int BrandId)
+        {
+            var response = new GeneralResponse(Ok().StatusCode);
+
+            var deletedBrand = await _BrandServices.DeleteBrandsAsync(BrandId);
+            if (deletedBrand is not null)
+            {
+                response.Message = "Brand deleted Sucessfully";
+                response.Data = deletedBrand;
+                return Ok(response);
+            }
+
+            response.StatusCode = NotFound().StatusCode;
+            response.Message = response.chooseMessage(NotFound().StatusCode);
+            return BadRequest(response);
+        }
+
+
     }
 }
