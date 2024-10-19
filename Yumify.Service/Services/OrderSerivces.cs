@@ -5,6 +5,8 @@ using Yumify.Core.Entities.OrdersEntities;
 using Yumify.Core.IRepository;
 using Yumify.Core.IServices;
 using Yumify.Core.Specification;
+using Yumify.Core.Specification.OrderSpec;
+using Yumify.Repository.SpecificationEvaluator.ProductSpec;
 
 namespace Yumify.Service.Services
 {
@@ -13,15 +15,17 @@ namespace Yumify.Service.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly ICartRespository _cart;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IStripePaymentService _PaymentService;
         private IGenericRepository<Product> _prodRepos;
         private IGenericRepository<Order> _OrderRepos;
         private IGenericRepository<DeliveryMethod> _deliveryMethodRepos;
 
-        public OrderSerivces(IUnitOfWork unitOfWork, ICartRespository cart, UserManager<ApplicationUser> userManager)
+        public OrderSerivces(IUnitOfWork unitOfWork, ICartRespository cart, UserManager<ApplicationUser> userManager,IStripePaymentService paymentService)
         {
             _unitOfWork = unitOfWork;
             _cart = cart;
             _userManager = userManager;
+            _PaymentService = paymentService;
             _prodRepos = _unitOfWork.Myrepository<Product>();
             _OrderRepos = _unitOfWork.Myrepository<Order>();
             _deliveryMethodRepos = _unitOfWork.Myrepository<DeliveryMethod>();
@@ -58,6 +62,15 @@ namespace Yumify.Service.Services
             // 4. Get Delivery Method From DeliveryMethods Repo
             var deliveryMethod = await _deliveryMethodRepos.GetByIdAsync(deliveryMethodId);
 
+            //Validate the pymentintent is unique for the order 
+            var spec = new OrderWithPaymentIntentSpecification(Cart?.PaymentIntentId);
+            var existingOrder = await _OrderRepos.GetByIdWithSpecAsync(spec);
+            if (existingOrder != null)
+            {
+                _OrderRepos.Delete(existingOrder);
+               await _PaymentService.CreateOrUpdatePaymentIntent(CartId);
+            }
+
             // 5. Create Order
             var order = new Order
             {
@@ -65,7 +78,8 @@ namespace Yumify.Service.Services
                 DeliveryMethod = deliveryMethod,
                 ShippingAddress = orderAddress,
                 Items = orderitems,
-                SubtotalPrice = subtotal
+                SubtotalPrice = subtotal,
+                PaymentIntentId=Cart?.PaymentIntentId!
             };
 
             await _OrderRepos.AddAsync(order);

@@ -21,6 +21,6 @@ namespace Yumify.Core.Entities.OrdersEntities
         [NotMapped]
         public decimal TotalPrice => SubtotalPrice + (DeliveryMethod is null ?0.0m : DeliveryMethod.Cost);
 
-        public string PaymentIntentId { get; set; } = string.Empty;
+        public string PaymentIntentId { get; set; }
     }
 }

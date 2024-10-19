@@ -17,6 +17,7 @@ using Yumify.Repository.IDentity;
 using Yumify.Repository.IDentity.DataSeeding;
 using Yumify.Repository.Repositories;
 using Yumify.Service.Services;
+using PaymentServices = Yumify.Service.Services.StripePaymentService;
 
 namespace Yumify.API
 {
@@ -34,7 +35,7 @@ namespace Yumify.API
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.MaxDepth = 64;
-                    options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
             //.ConfigureApiBehaviorOptions(option => { option.SuppressModelStateInvalidFilter = true; } );
 
@@ -69,6 +70,7 @@ namespace Yumify.API
             builder.Services.AddScoped(typeof(IUnitOfWork), typeof(Unitofwork));
             builder.Services.AddScoped(typeof(IOrderServices), typeof(OrderSerivces));
             builder.Services.AddScoped(typeof(IProductServices), typeof(ProductService));
+            //builder.Services.AddScoped(typeof(IStripePaymentService), typeof(PaymentServices));
             builder.Services.AddScoped<IConnectionMultiplexer>
                 ((serviceProvider) =>
                     {

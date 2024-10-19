@@ -16,5 +16,6 @@ namespace Yumify.Core.Specification
             Includes.Add(O => O.DeliveryMethod);
             Includes.Add(O => O.Items);
         }
+        
     }
 }

@@ -10,7 +10,12 @@ namespace Yumify.Core.Entities
     {
         public string Id { get; set; } = null!;
         public List<CartItems> Items { get; set; } = null!;
+        public int? deliveryMethodId { get; set; }
+        public decimal? ShippingCost { get; set; }
+        public string? PaymentIntentId { get; set; }
+        public string? ClientSecrete { get; set; }
 
+        public Cart() { }
         public Cart(string Id)
         {
             this.Id = Id;
