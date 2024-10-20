@@ -2,6 +2,7 @@
 using Yumify.API.Helper;
 using Yumify.Core.Entities;
 using Yumify.Core.IServices;
+using Yumify.Service.Helper.Attributes;
 
 namespace Yumify.API.Controllers
 {
@@ -14,7 +15,7 @@ namespace Yumify.API.Controllers
 
             _CategoryServices = productServices;
         }
-
+        [Cached(600)]
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
