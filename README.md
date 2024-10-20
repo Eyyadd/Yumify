@@ -3,7 +3,7 @@
 Yumify Online Commerce is an advanced e-commerce platform designed to handle online purchases with an efficient and scalable architecture. It integrates various modern tools and technologies to deliver seamless user experiences, secure payments, and optimized performance.
 
 # Features
-RESTful API: Provides clean, standardized APIs for client applications.
+▶️ RESTful API: Provides clean, standardized APIs for client applications. <br>
 JWT Authentication: Secure authentication using JSON Web Tokens.
 Automapper: Simplifies object-to-object mapping.
 Dependency Injection: Ensures clean code and modularity.
