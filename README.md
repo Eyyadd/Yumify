@@ -16,12 +16,12 @@ Yumify Online Commerce is an advanced e-commerce platform designed to handle onl
 ▶️ Custom Middleware: Custom middleware for handling requests and responses.<br>
 
 # Technologies
-## ASP.NET Core
-## Entity Framework Core
-## MSSQL Server
-### Redis
-## Stripe
-## JWT Authentication
-## LINQ
-## AutoMapper
-## Dependency Injection
+<h4 bold> ASP.NET Core </h4>
+ Entity Framework Core
+ MSSQL Server
+ Redis
+ Stripe
+ JWT Authentication
+ LINQ
+ AutoMapper
+ Dependency Injection
