@@ -68,10 +68,11 @@ namespace Yumify.API
             builder.Services.AddScoped(typeof(ICartRespository), typeof(CartRepository));
             builder.Services.AddScoped(typeof(IAuthSerivce), typeof(AuthService));
             builder.Services.AddScoped(typeof(IUnitOfWork), typeof(Unitofwork));
+            builder.Services.AddScoped(typeof(IStripePaymentService), typeof(PaymentServices));
             builder.Services.AddScoped(typeof(IOrderServices), typeof(OrderSerivces));
             builder.Services.AddScoped(typeof(IProductServices), typeof(ProductService));
-            //builder.Services.AddScoped(typeof(IStripePaymentService), typeof(PaymentServices));
-            builder.Services.AddScoped<IConnectionMultiplexer>
+            builder.Services.AddSingleton(typeof(IResponseCahceService),typeof(ResponseCahceService));
+            builder.Services.AddSingleton<IConnectionMultiplexer>
                 ((serviceProvider) =>
                     {
                         return ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("redis")!);

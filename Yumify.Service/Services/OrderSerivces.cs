@@ -6,7 +6,6 @@ using Yumify.Core.IRepository;
 using Yumify.Core.IServices;
 using Yumify.Core.Specification;
 using Yumify.Core.Specification.OrderSpec;
-using Yumify.Repository.SpecificationEvaluator.ProductSpec;
 
 namespace Yumify.Service.Services
 {

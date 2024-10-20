@@ -1,13 +1,10 @@
-﻿using Castle.Core.Logging;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
 using Stripe;
 using Yumify.Core.Entities;
 using Yumify.Core.Entities.OrdersEntities;
 using Yumify.Core.IRepository;
 using Yumify.Core.IServices;
 using Yumify.Core.Specification.OrderSpec;
-using Yumify.Repository.Repositories;
 using Product = Yumify.Core.Entities.Product;
 namespace Yumify.Service.Services
 {

@@ -9,6 +9,7 @@ using Yumify.Core.IServices;
 using Yumify.Repository.SpecificationEvaluator;
 using Yumify.Repository.SpecificationEvaluator.ProductSpec;
 using Yumify.Service.DTO.Products;
+using Yumify.Service.Helper.Attributes;
 using Yumify.Service.Helper.Pagintion;
 using Yumify.Service.SpecificationEvaluator.Sorting;
 
@@ -24,7 +25,7 @@ namespace Yumify.API.Controllers
             _ProductServices = productServices;
             _Mapper = mapper;
         }
-
+        [Cached(600)]
         [HttpGet]
         public async Task<ActionResult<Pagination<IEnumerable<GetProductDTO>>>> GetProducts([FromQuery] GetSpecParts? specParts)
         {
