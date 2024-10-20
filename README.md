@@ -4,13 +4,24 @@ Yumify Online Commerce is an advanced e-commerce platform designed to handle onl
 
 # Features
 ▶️ RESTful API: Provides clean, standardized APIs for client applications. <br>
-JWT Authentication: Secure authentication using JSON Web Tokens.
-Automapper: Simplifies object-to-object mapping.
-Dependency Injection: Ensures clean code and modularity.
-MSSQL Server & Entity Framework Core: Database management using SQL Server with EF Core for object-relational mapping (ORM).
-LINQ: Querying data efficiently using Language Integrated Query.
-Onion Architecture: Clean, maintainable architecture with clear separation of concerns.
-Stripe Payment Integration: Secure online payment processing via Stripe.
-Specification Design Pattern: Manages complex business rules and queries.
-Redis: In-memory caching and database using Redis for improved performance.
-Custom Middleware: Custom middleware for handling requests and responses.
+▶️ JWT Authentication: Secure authentication using JSON Web Tokens. <br>
+▶️ Automapper: Simplifies object-to-object mapping. <br>
+▶️ Dependency Injection: Ensures clean code and modularity. <br>
+▶️ MSSQL Server & Entity Framework Core: Database management using SQL Server with EF Core for object-relational mapping (ORM).<br>
+▶️ LINQ: Querying data efficiently using Language Integrated Query. <br>
+▶️ Onion Architecture: Clean, maintainable architecture with clear separation of concerns.<br>
+▶️ Stripe Payment Integration: Secure online payment processing via Stripe.<br>
+▶️ Specification Design Pattern: Manages complex business rules and queries.<br>
+▶️ Redis: In-memory caching and database using Redis for improved performance.<br>
+▶️ Custom Middleware: Custom middleware for handling requests and responses.<br>
+
+# Technologies
+## ASP.NET Core
+## Entity Framework Core
+## MSSQL Server
+### Redis
+## Stripe
+## JWT Authentication
+## LINQ
+## AutoMapper
+## Dependency Injection
