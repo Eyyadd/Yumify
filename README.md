@@ -50,7 +50,7 @@ You can explore the available endpoints through Swagger by running the project a
 Contributions are welcome! Please follow these steps:<br>
 
 Fork the repository.<br>
-Create a new branch (git checkout -b feature/your-feature-name).<br>
-Commit your changes (git commit -m 'Add your feature').<br>
-Push to the branch (git push origin feature/your-feature-name).<br>
-Open a pull request.<br>
+1- Create a new branch (git checkout -b feature/your-feature-name).<br>
+2- Commit your changes (git commit -m 'Add your feature').<br>
+3- Push to the branch (git push origin feature/your-feature-name).<br>
+4- Open a pull request.<br>
