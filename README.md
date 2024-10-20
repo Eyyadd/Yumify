@@ -25,3 +25,32 @@ Yumify Online Commerce is an advanced e-commerce platform designed to handle onl
 <h3 bold> LINQ </h3>
 <h3 bold> AutoMapper </h3>
 <h3 bold> Dependency Injection </h3>
+
+
+# Project Architecture
+The project follows Onion Architecture to maintain a clear separation of concerns. Here are the primary layers:
+
+Core: Contains the domain models, interfaces, and business logic.<br>
+Infrastructure: Handles the data access and external services (e.g., Redis, Stripe, and MSSQL).<br>
+API: The web API layer, which exposes endpoints and processes incoming requests.<br>
+Custom Middleware: Custom middleware is used to handle tasks like logging, request validation, and error handling globally. <br>
+
+Caching with Redis :
+The project uses Redis both for in-memory database and caching to improve response time for frequently requested data.<br>
+
+Specification Design Pattern
+We use the Specification Design Pattern to handle complex business logic, allowing cleaner and more maintainable query code.<br>
+
+# API Documentation
+The API exposes various endpoints for managing products, orders, payments, and user accounts.<br>
+
+You can explore the available endpoints through Swagger by running the project and navigating to /swagger.
+
+# Contributing
+Contributions are welcome! Please follow these steps:<br>
+
+Fork the repository.<br>
+Create a new branch (git checkout -b feature/your-feature-name).<br>
+Commit your changes (git commit -m 'Add your feature').<br>
+Push to the branch (git push origin feature/your-feature-name).<br>
+Open a pull request.<br>
