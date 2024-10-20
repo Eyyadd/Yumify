@@ -47,7 +47,7 @@ namespace Yumify.Service.Helper.Attributes
         {
             var KeyBuilder = new StringBuilder();
             KeyBuilder.Append(request.Path);
-            foreach (var (key,value) in request.Query)
+            foreach (var (key,value) in request.Query.OrderBy(kv=>kv.Key))
             {
                 KeyBuilder.Append($"|{key}-{value}");
             }
